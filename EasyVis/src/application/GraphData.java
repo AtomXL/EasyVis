@@ -20,13 +20,16 @@ import javafx.util.Callback;
 
 public class GraphData {
 	
-	private ArrayList<String> headers = new ArrayList<String>();
-	private ArrayList<ArrayList<String>> dataRows = new ArrayList<ArrayList<String>>();
+	private ArrayList<String> headers;
+	private ArrayList<ArrayList<String>> dataRows;
 	public GraphData() {
 		super();
 	}
 	
-	public void importCSV (File file) throws IOException {
+	public void importCSV (File file) throws IOException {		
+		headers = new ArrayList<String>();
+		dataRows = new ArrayList<ArrayList<String>>();
+		
 		CSVReader reader = new CSVReader(new FileReader(file));
 		String[] nextLine =  reader.readNext();
 		
