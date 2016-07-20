@@ -26,7 +26,7 @@ public class GraphData {
 		super();
 	}
 	
-	public void importCSV (File file) throws IOException {		
+	public String importCSV (File file) throws IOException {		
 		headers = new ArrayList<String>();
 		dataRows = new ArrayList<ArrayList<String>>();
 		
@@ -48,10 +48,12 @@ public class GraphData {
 				
 				dataRows.add(newRow);
 		    }
+		    reader.close();
+		    return "File imported: " + file.getName();
     	} else {
-    		System.out.println("empty");
+    		reader.close();
+    		return "File is empty";
     	}
-		reader.close();
 	}
 		
 	public ArrayList<String> getHeaders() {
@@ -93,26 +95,25 @@ public class GraphData {
 		
 	}
 	
-	private TableColumn<ObservableList<StringProperty>, String> createColumn(
-		      final int columnIndex, String columnTitle) {
+	private TableColumn<ObservableList<StringProperty>, String> createColumn(final int index, String title) {
 		    TableColumn<ObservableList<StringProperty>, String> column = new TableColumn<>();
-		    String title;
-		    if (columnTitle == null || columnTitle.trim().length() == 0) {
-		      title = "Column " + (columnIndex + 1);
+		    String newTitle;
+		    if (title == null || title.trim().length() == 0) {
+		      newTitle = "Column " + (index + 1);
 		    } else {
-		      title = columnTitle;
+		      newTitle = title;
 		    }
-		    column.setText(title);
+		    column.setText(newTitle);
 		    column
 		        .setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList<StringProperty>, String>, ObservableValue<String>>() {
 		          @Override
 		          public ObservableValue<String> call(
 		              CellDataFeatures<ObservableList<StringProperty>, String> cellDataFeatures) {
 		            ObservableList<StringProperty> values = cellDataFeatures.getValue();
-		            if (columnIndex >= values.size()) {
+		            if (index >= values.size()) {
 		              return new SimpleStringProperty("");
 		            } else {
-		              return cellDataFeatures.getValue().get(columnIndex);
+		              return cellDataFeatures.getValue().get(index);
 		            }
 		          }
 		        });

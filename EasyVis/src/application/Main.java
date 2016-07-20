@@ -52,20 +52,14 @@ public class Main extends Application {
 		
 		FileChooser chooser = new FileChooser();
 		chooser.setTitle("Select a CSV file");
-		chooser.setInitialDirectory(
-	            new File(System.getProperty("user.home"))
-	        ); 
-		chooser.getExtensionFilters().addAll(
-				new ExtensionFilter("CSV Files", "*.csv")
-				);
+		chooser.setInitialDirectory(new File(System.getProperty("user.home"))); 
+		chooser.getExtensionFilters().addAll(new ExtensionFilter("CSV Files", "*.csv"));
 		File selectedFile = chooser.showOpenDialog(null);
 
 		if (selectedFile != null && getFileExtension(selectedFile).equals("csv")) {
-
-			statusText.setText("File selected: " + selectedFile.getName());
 			
 			try {
-				graphData.importCSV(selectedFile);
+				statusText.setText(graphData.importCSV(selectedFile));
 			} catch (IOException e) {
 				statusText.setText("File import failed.");
 				e.printStackTrace();
