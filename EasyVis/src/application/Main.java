@@ -11,7 +11,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
+import javafx.scene.chart.BarChart;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -20,6 +22,12 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	
 	@FXML private Button loadButton;
+	@FXML private Button lineGraphButton;
+	@FXML private Button barGraphButton;
+	@FXML private Button scatterGraphButton;
+	@FXML private ComboBox<String> barX;
+	@FXML private ComboBox<String> barY;
+	@FXML private BarChart<String, Number> barChart;
 	@FXML private Text statusText;
 	@FXML private TableView<ObservableList<StringProperty>> dataTable = new TableView<>();
 	
@@ -42,11 +50,34 @@ public class Main extends Application {
 		primaryStage.setMinHeight(600);
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+		
 	}
 	
-	@FXML protected void handleLoadButtomPressed (ActionEvent event){
+	@FXML protected void handleLoadButtonPressed (ActionEvent event){
 		displayFileChooser();
 	}
+	
+	@FXML protected void handleLineGraphButtonPressed (ActionEvent event){
+		
+		DynamicLineGraph lineGraph = new DynamicLineGraph();
+		
+	}
+	
+	@FXML protected void handleBarGraphButtonPressed (ActionEvent event){
+		
+		barChart.getData().clear();
+		barChart.layout();
+		barChart.getData().add(graphData.getXYSeries(barX.getValue(), barY.getValue()));
+			
+	}
+	
+	@FXML protected void handleScatterGraphButtonPressed (ActionEvent event){
+		
+		DynamicScatterGraph scatterGraph = new DynamicScatterGraph();
+	
+	}
+
 	
 	private void displayFileChooser() {
 		
@@ -66,6 +97,10 @@ public class Main extends Application {
 			}
 			
 			graphData.fillTable(dataTable);
+			
+			
+			barX.setItems(graphData.getHeaders());
+			barY.setItems(graphData.getHeaders());
 			
 		}
 		else {
